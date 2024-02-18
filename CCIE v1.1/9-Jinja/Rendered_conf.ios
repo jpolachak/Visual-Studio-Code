@@ -1,0 +1,30 @@
+hostname Baghdad_Branch
+!
+interface Loopback1
+ description ### Main loopback ###
+ ip address 192.168.244.101 255.255.255.255
+ !
+interface GigabitEthernet0/0
+ description ### Uplink WAN to Baghdad site ###
+ ip address dhcp 
+!
+interface GigabitEthernet0/1
+ description ### Downlink to Baghdad LAN_SW G0/24 ###
+!
+interface GigabitEthernet0/1.30
+ description ### IT_30 Gateway ###
+ encapsulation dot1Q 30
+ ip address 10.101.30.254 255.255.255.0
+!
+interface GigabitEthernet0/1.50
+ description ### MGMT_50 Gateway ###
+ encapsulation dot1Q 50
+ ip address 10.101.50.254 255.255.255.0
+
+router ospf 11
+ router-id 192.168.244.101
+ passive-interface GigabitEthernet0/1.30
+ passive-interface GigabitEthernet0/1.50
+ network 10.101.30.0 0.255.255.255 area 0
+ network 10.101.50.0 0.255.255.255 area 0
+ !
